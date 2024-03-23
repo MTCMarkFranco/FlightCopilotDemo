@@ -9,22 +9,24 @@ namespace CustomCopilot
 {
     internal class Program
     {
-
         static async Task Main(string[] args)
 
         {
-            
-
+   
+            // Get out Secrets from Secret Store...
             var configBuilder = new ConfigurationBuilder()
                 .AddUserSecrets<Program>()
                 .Build();
 
+            // Build a semantic kernel
             var skBuilder = Kernel.CreateBuilder();
+            
+            // Add the Azure OpenAI Chat Completion
             skBuilder.AddAzureOpenAIChatCompletion("GPT4",
             configBuilder["AOI_ENDPOINT"] ?? string.Empty,
             configBuilder["AOI_KEY"] ?? string.Empty);
              
-            // adding OOTB and Custom PLugins
+            // adding OOTB and Custom Plugins
             #pragma warning disable SKEXP0050
             skBuilder.Plugins.AddFromType<TimePlugin>();
             skBuilder.Plugins.AddFromObject(
